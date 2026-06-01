@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>seota_ | Graphics Programmer</title>
+    <title>Bio | Graphics Programmer</title>
     <style>
         * {
             margin: 0;
@@ -26,45 +26,79 @@
             height: 100%;
             z-index: 1;
         }
-        .profile-card {
+        .container {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
             z-index: 2;
-            background: rgba(15, 15, 15, 0.85);
-            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            max-width: 450px;
+            width: 90%;
+            pointer-events: auto;
+        }
+        .profile-card {
+            background: rgba(15, 15, 15, 0.9);
+            padding: 25px;
             border-radius: 8px;
             border: 1px solid #00ff66;
             box-shadow: 0 0 20px rgba(0, 255, 102, 0.2);
-            max-width: 400px;
-            width: 90%;
             text-align: center;
-            pointer-events: auto;
+            width: 100%;
         }
         h1 {
-            font-size: 2rem;
+            font-size: 1.8rem;
             margin-bottom: 10px;
             text-transform: uppercase;
             letter-spacing: 2px;
         }
         p {
             color: #a0a0a0;
-            line-height: 1.6;
-            margin-bottom: 20px;
+            line-height: 1.5;
+            margin-bottom: 15px;
+            font-size: 0.95rem;
         }
         .tags {
             display: flex;
             justify-content: center;
             gap: 10px;
+            margin-bottom: 15px;
         }
         .tag {
             background: #141414;
             border: 1px solid #00ff66;
-            padding: 5px 15px;
+            padding: 3px 12px;
             border-radius: 4px;
-            font-size: 0.9rem;
-            font-weight: bold;
+            font-size: 0.85rem;
+        }
+        .otter-img {
+            width: 100%;
+            max-height: 220px;
+            object-fit: cover;
+            border-radius: 6px;
+            border: 1px solid rgba(0, 255, 102, 0.3);
+        }
+        .audio-player-container {
+            width: 100%;
+            background: rgba(15, 15, 15, 0.9);
+            border: 1px solid #00ff66;
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 0 20px rgba(0, 255, 102, 0.2);
+        }
+        .audio-info {
+            text-align: center;
+            font-size: 0.85rem;
+            margin-bottom: 10px;
+            color: #00ff66;
+        }
+        audio {
+            width: 100%;
+            height: 30px;
+            outline: none;
         }
     </style>
 </head>
@@ -72,62 +106,61 @@
 
     <canvas id="canvas"></canvas>
 
-    <div class="profile-card">
-        <h1>Your Name</h1>
-        <p>I am a graphics programmer focused on writing high-performance renderers, low-level engine architecture, and real-time simulations.</p>
-        <div class="tags">
-            <span class="tag">Zig</span>
-            <span class="tag">C++</span>
+    <div class="container">
+        
+        <div class="profile-card">
+            <h1>Your Name</h1>
+            <p>I am a graphics programmer currently writing engines, rendering custom simulations, and optimizing shaders.</p>
+            
+            <div class="tags">
+                <span class="tag">Zig</span>
+                <span class="tag">C++</span>
+            </div>
+
+            <img class="otter-img" src="jpg" alt="Otter Image">
         </div>
+
+        <div class="audio-player-container">
+            <div class="audio-info">🎵 Jam Session</div>
+            <audio controls src="0601 (1).mp3"></audio>
+        </div>
+
     </div>
 
     <script>
         const canvas = document.getElementById('canvas');
         const ctx = canvas.getContext('2d');
-
         let width = canvas.width = window.innerWidth;
         let height = canvas.height = window.innerHeight;
-
-        // Simple interactive particle array
         const particles = [];
-        const particleCount = 100;
 
         class Particle {
             constructor() {
                 this.x = Math.random() * width;
                 this.y = Math.random() * height;
-                this.vx = (Math.random() - 0.5) * 1.5;
-                this.vy = (Math.random() - 0.5) * 1.5;
-                this.radius = Math.random() * 2 + 1;
+                this.vx = (Math.random() - 0.5) * 1.2;
+                this.vy = (Math.random() - 0.5) * 1.2;
+                this.radius = Math.random() * 2 + 0.5;
             }
             update() {
-                this.x += this.vx;
-                this.y += this.vy;
-
+                this.x += this.vx; this.y += this.vy;
                 if (this.x < 0 || this.x > width) this.vx *= -1;
                 if (this.y < 0 || this.y > height) this.vy *= -1;
             }
             draw() {
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-                ctx.fillStyle = '#00ff66';
+                ctx.fillStyle = 'rgba(0, 255, 102, 0.7)';
                 ctx.fill();
             }
         }
 
-        for (let i = 0; i < particleCount; i++) {
-            particles.push(new Particle());
-        }
+        for (let i = 0; i < 80; i++) particles.push(new Particle());
 
         function animate() {
-            ctx.fillStyle = 'rgba(10, 10, 10, 0.1)'; // Gives a slight motion blur trail
+            ctx.fillStyle = 'rgba(10, 10, 10, 0.08)';
             ctx.fillRect(0, 0, width, height);
-
-            particles.forEach(p => {
-                p.update();
-                p.draw();
-            });
-
+            particles.forEach(p => { p.update(); p.draw(); });
             requestAnimationFrame(animate);
         }
 
@@ -135,7 +168,6 @@
             width = canvas.width = window.innerWidth;
             height = canvas.height = window.innerHeight;
         });
-
         animate();
     </script>
 </body>
